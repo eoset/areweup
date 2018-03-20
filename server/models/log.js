@@ -3,10 +3,19 @@ const validator = require('validator');
 const _ = require('lodash');
 
 var LogSchema = new mongoose.Schema({
-    httpVerb: {
+    method: {
         type: String
     },
     endpoint: {
+        type: String
+    },
+    body: {
+        type: String
+    },
+    host: {
+        type: String
+    },
+    ip: {
         type: String
     },
     timestamp: {

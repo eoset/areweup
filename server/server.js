@@ -18,8 +18,11 @@ app.use((req, res, next) => {
 
     //Logger
     var logEntry = new Log({
-        httpVerb: req.method,
+        method: req.method,
         endpoint: req.url,
+        body: req.body,
+        host: req.hostname,
+        ip: req.ip,
         timestamp: new Date().toString()
     });
 
