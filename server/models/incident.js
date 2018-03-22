@@ -37,7 +37,7 @@ var IncidentSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Number,
-        required: true
+        required: false
     },
     resolvedAt: {
         type: Number,

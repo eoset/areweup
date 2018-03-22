@@ -9,9 +9,6 @@ var LogSchema = new mongoose.Schema({
     endpoint: {
         type: String
     },
-    body: {
-        type: String
-    },
     host: {
         type: String
     },
