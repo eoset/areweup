@@ -42,6 +42,12 @@ app.get('/', (req, res) => {
     res.send('Hello');
 });
 
+//POST /hook
+app.post('/hook', [middleWare.logger], (req, res) => {
+    console.log(req.body);
+    res.send();
+});
+
 //GET /incidents
 app.get('/incidents', [middleWare.logger], (req, res) => {
     Incident.find().then((incidents) => {
