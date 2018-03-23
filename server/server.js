@@ -152,6 +152,21 @@ app.get('/services', [middleWare.logger], (req, res) => {
     });
 });
 
+//GET /status
+
+app.get('/status', [middleWare.logger], (req, res) => {
+    Service.find().then((services) => {
+        for (let i = 0; i < services.length; i++) {
+            //const element = array[i];
+            console.log(services[i].status);
+            
+        }
+        res.status(200).send(services);
+    }, (err) => {
+        res.status(400).send(err);
+    });
+});
+
 
 app.listen(3000, () => {
     console.log('Server running at port 3000');
