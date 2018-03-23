@@ -136,6 +136,16 @@ describe('GET /incidents/:id', () => {
     });
 });
 
+// PUT /incideints/:id
+describe('PUT /incidents/:id', () => {
+    it('should return 404 if not found', (done) => {
+        request(app)
+            .put(`/incidents/${new ObjectID().toHexString()}`)
+            .send({})
+            .expect(404)
+            .end(done);
+    })
+});
 
 // POST /incidents
 describe('POST /incidents', () => {
