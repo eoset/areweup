@@ -44,30 +44,8 @@ app.get('/', (req, res) => {
 
 //POST /hook
 app.post('/hook', [middleWare.logger], (req, res) => {
-    console.log(JSON.stringify(req.body, undefined, 2));
-
-    var serviceImpact = {
-        status: "Ongoing"
-    };
-    var incident = new Incident({
-        description: req.body.alert.message,
-        status: "Ongoing",
-        impact: "Severe",
-        responsibleService: "Eriks Webapp",
-        affectedServices: "Henkes Webapp",
-        reporter: "OpsGenie",
-        createdAt: new Date().getTime(),
-        resolvedAt: null,
-        totalResolutionTime: null,
-        incidentWorkflow: [{
-            body: "Note created",
-            createdAt: new Date().getTime()
-        }],
-        tags: null
-    });
-
     var incident2 = new Incident({
-        description: "A test incident",
+        description: req.body.alert.message,
         status: "Ongoing",
         impact: "Disruption",
         responsibleService: "Acme",
@@ -100,14 +78,11 @@ app.post('/hook', [middleWare.logger], (req, res) => {
     })
 
     incident2.save().then((doc) => {
-        //Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
         console.log(doc);
         res.status(201).send(doc);
     }, (err) => {
         res.status(400).send(err);
     })
-
-    res.send();
 });
 
 //GET /incidents
