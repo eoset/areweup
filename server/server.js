@@ -44,7 +44,7 @@ app.get('/', (req, res) => {
 
 //POST /hook
 app.post('/hook', [middleWare.logger], (req, res) => {
-    console.log(req.body);
+    console.log(JSON.stringify(req.body, undefined, 2));
     res.send();
 });
 
