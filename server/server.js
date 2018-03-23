@@ -87,6 +87,38 @@ app.post('/incidents', [middleWare.logger], (req, res) => {
     })
 });
 
+//PUT /incidents/:id
+app.put('/incidents/:id', [middleWare.logger], (req, res) => {
+    Incident.findById(req.params.id).then((incident) => {
+        if(!incident){
+            res.status(404).send(`No incident found with id ${req.params.id}`);
+        }
+
+        //mapping
+        incident.status = req.body.incident.status;
+        console.log(req.body.incident.status);
+        incident.description = req.body.incident.description;
+        incident.impact = req.body.incident.impact;
+        incident.responsibleService = req.body.incident.responsibleService;
+        incident.affectedServices = req.body.incident.affectedServices;
+        incident.reporter = req.body.incident.reporter;
+        if (incident.status === "Resolved"){
+            incident.resolvedAt = new Date().getTime();
+        }
+        incident.totalResolutionTime = null;
+        incident.incidentWorkflow = req.body.incident.incidentWorkflow;
+        incident.tags = req.body.incident.tags;
+
+        console.log(incident.status);
+        console.log(JSON.stringify(incident, undefined, 2));
+        incident.save().then((doc) => {
+            res.status(200).send(doc);
+        }, (err) => {
+            res.status(400).send(err);
+        })
+    });
+});
+
 //PATCH /incidents/:id
 app.patch('/incidents/:id', [middleWare.logger], (req, res) => {
     var id = req.params.id;
