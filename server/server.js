@@ -66,7 +66,40 @@ app.post('/hook', [middleWare.logger], (req, res) => {
         tags: null
     });
 
-    incident.save().then((doc) => {
+    var incident2 = new Incident({
+        description: "A test incident",
+        status: "Ongoing",
+        impact: "Disruption",
+        responsibleService: "Acme",
+        affectedServices: [
+            {
+                serviceName: "Kakburken"
+            },
+            {
+                serviceName: "Ölburken"
+            }
+        ],
+        reporter: "OpsGenie@asdf.com",
+        createdAt: new Date().getTime(),
+        resolvedAt: null,
+        totalResolutionTime: null,
+        incidentWorkflow: [
+            {
+                body: "Incident detected, work initiated",
+                createdAt: new Date().getTime()
+            }
+        ],
+        tags: [
+            {
+                tag: "azure"
+            },
+            {
+                tag: "monetary value"
+            }
+        ]
+    })
+
+    incident2.save().then((doc) => {
         //Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
         console.log(doc);
         res.status(201).send(doc);
