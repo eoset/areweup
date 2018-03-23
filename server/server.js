@@ -87,6 +87,29 @@ app.post('/incidents', [middleWare.logger], (req, res) => {
     })
 });
 
+//PATCH /incidents/:id
+app.patch('/incidents/:id', [middleWare.logger], (req, res) => {
+    var id = req.params.id;
+    var body = _.pick(req.body, ['status', 'reporter']);
+
+    if(!ObjectID.isValid(id)) {
+        return res.status(400).send('Invalid ID');
+    }
+
+    Incident.findByIdAndUpdate(id, {$set: body}, {new: true}).then((incident) => {
+        if(!incident) {
+            return res.status(404).send("No incident by that ID exists");
+        }
+
+        res.send({incident});
+    }).catch((err) => {
+        res.status(400).send();
+    });
+
+    console.log(JSON.stringify(body, undefined, 2));
+});
+
+
 app.listen(3000, () => {
     console.log('Server running at port 3000');
 });
