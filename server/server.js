@@ -69,6 +69,9 @@ app.get('/incidents/:id', [middleWare.logger], (req, res) => {
 
 //POST /incidents
 app.post('/incidents', [middleWare.logger], (req, res) => {
+    var serviceImpact = {
+        status: req.body.impact
+    };
     var incident = new Incident({
         description: req.body.description,
         status: req.body.status,
@@ -84,6 +87,7 @@ app.post('/incidents', [middleWare.logger], (req, res) => {
     });
 
     incident.save().then((doc) => {
+        Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
         res.status(201).send(doc);
     }, (err) => {
         res.status(400).send(err);
@@ -112,6 +116,7 @@ app.put('/incidents/:id', [middleWare.logger], (req, res) => {
         incident.tags = req.body.incident.tags;
 
         incident.save().then((doc) => {
+            Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
             res.status(200).send(doc);
         }, (err) => {
             res.status(400).send(err);
