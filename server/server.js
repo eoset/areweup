@@ -99,7 +99,6 @@ app.put('/incidents/:id', [middleWare.logger], (req, res) => {
 
         //mapping
         incident.status = req.body.incident.status;
-        console.log(req.body.incident.status);
         incident.description = req.body.incident.description;
         incident.impact = req.body.incident.impact;
         incident.responsibleService = req.body.incident.responsibleService;
@@ -112,8 +111,6 @@ app.put('/incidents/:id', [middleWare.logger], (req, res) => {
         incident.incidentWorkflow = req.body.incident.incidentWorkflow;
         incident.tags = req.body.incident.tags;
 
-        console.log(incident.status);
-        console.log(JSON.stringify(incident, undefined, 2));
         incident.save().then((doc) => {
             res.status(200).send(doc);
         }, (err) => {
@@ -181,11 +178,19 @@ var schema = buildSchema(`
       status: String
   }
 
+  type Incidents {
+    description: String
+    status: String
+    impact: String
+    responsibleService: String
+
+  }
   type Query {
     services: [Services]
+    incidents: [Incidents]
   }`);
 
-var root = { services: () => Service.find() };
+var root = { services: () => Service.find(), incidents: () => Incident.find() };
 
 app.use('/graphql', graphqlHTTP({
     schema: schema,
