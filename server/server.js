@@ -3,6 +3,8 @@ const _ = require('lodash');
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
 
 //Created modules
 const {mongoose} = require('./db/mongoose');
@@ -155,18 +157,61 @@ app.get('/services', [middleWare.logger], (req, res) => {
 //GET /status
 
 app.get('/status', [middleWare.logger], (req, res) => {
-    Service.find().then((services) => {
+    Service.find().select("-_id").then((services) => {
+        var returnObj = {
+            allServicesOperational : true,
+            affectedServices: []
+        };
+
         for (let i = 0; i < services.length; i++) {
-            //const element = array[i];
-            console.log(services[i].status);
-            
+            if(services[i].status != "Operational"){
+                returnObj.allServicesOperational = false;
+                returnObj.affectedServices.push(services[i].name)
+            }
         }
-        res.status(200).send(services);
+        res.status(200).send(returnObj);
     }, (err) => {
         res.status(400).send(err);
     });
 });
 
+var schema = buildSchema(`
+  type Services {
+      name: String
+      status: String
+  }
+
+  type Query {
+    services: [Services]
+  }`);
+
+var root = { services: () => Service.find() };
+
+app.use('/graphql', graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+}));
+
+// var express = require('express');
+// var graphqlHTTP = require('express-graphql');
+// var { buildSchema } = require('graphql');
+
+// var schema = buildSchema(`
+//   type Query {
+//     hello: String
+//   }
+// `);
+
+// var root = { hello: () => 'Hello world!' };
+
+// var app = express();
+// app.use('/graphql', graphqlHTTP({
+//   schema: schema,
+//   rootValue: root,
+//   graphiql: true,
+// }));
+// app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
 
 app.listen(3000, () => {
     console.log('Server running at port 3000');
