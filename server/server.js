@@ -7,6 +7,7 @@ const {ObjectID} = require('mongodb');
 //Created modules
 const {mongoose} = require('./db/mongoose');
 const {Incident} = require('./models/incident');
+const {Service} = require('./models/service');
 const {Log} = require('./models/log');
 
 //Initiate App instance
@@ -139,6 +140,16 @@ app.patch('/incidents/:id', [middleWare.logger], (req, res) => {
     });
 
     console.log(JSON.stringify(body, undefined, 2));
+});
+
+//GET /services
+
+app.get('/services', [middleWare.logger], (req, res) => {
+    Service.find().then((services) => {
+        res.status(200).send({services});
+    }, (err) => {
+        res.status(400).send(e);
+    });
 });
 
 
