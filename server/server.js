@@ -188,7 +188,13 @@ var schema = buildSchema(`
     status: String
     impact: String
     responsibleService: String
-
+    affectedServices: [String]
+    reporter: String
+    createdAt: String
+    resolvedAt: String
+    totalResolutionTime: String
+    incidentWorkflow: [String]
+    tags: [String]
   }
   type Query {
     services: [Services]
@@ -202,26 +208,6 @@ app.use('/graphql', graphqlHTTP({
     rootValue: root,
     graphiql: true
 }));
-
-// var express = require('express');
-// var graphqlHTTP = require('express-graphql');
-// var { buildSchema } = require('graphql');
-
-// var schema = buildSchema(`
-//   type Query {
-//     hello: String
-//   }
-// `);
-
-// var root = { hello: () => 'Hello world!' };
-
-// var app = express();
-// app.use('/graphql', graphqlHTTP({
-//   schema: schema,
-//   rootValue: root,
-//   graphiql: true,
-// }));
-// app.listen(4000, () => console.log('Now browse to localhost:4000/graphql'));
 
 app.listen(3000, () => {
     console.log('Server running at port 3000');
