@@ -67,7 +67,8 @@ app.post('/hook', [middleWare.logger], (req, res) => {
     });
 
     incident.save().then((doc) => {
-        Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
+        //Service.findOneAndUpdate({name: req.body.responsibleService}, {$set: serviceImpact}, {$new: true}).then((service) => {});
+        console.log(doc);
         res.status(201).send(doc);
     }, (err) => {
         res.status(400).send(err);
