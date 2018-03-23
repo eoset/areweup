@@ -19,7 +19,7 @@ const incidents = [{
             serviceName: "Ölburken"
         }
     ],
-    reporter: "erik.sallstrom@visma.com",
+    reporter: "some.random@email.com",
     createdAt: new Date().getTime(),
     resolvedAt: null,
     totalResolutionTime: null,
@@ -49,7 +49,7 @@ const incidents = [{
             serviceName: "Bussen"
         },
     ],
-    reporter: "erik.sallstrom@visma.com",
+    reporter: "some.random@email.com",
     createdAt: new Date().getTime(),
     resolvedAt: null,
     totalResolutionTime: null,
